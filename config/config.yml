@@ -1,0 +1,8 @@
+smtp:
+  aws:
+    host: email-smtp.us-east-1.amazonaws.com 
+    port: 587 
+    user: <%= ENV['AWS_SMTP_USER'] %>
+    pass: <%= ENV['AWS_SMTP_PASS'] %> 
+    domain: <%= ENV['AWS_SMTP_DOMAIN'] %>
+ 

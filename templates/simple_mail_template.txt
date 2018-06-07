@@ -1,0 +1,7 @@
+From: <%= from %>
+To: <%= to %>
+Subject: <%= subject %>
+
+Hi my friend, long time we don't go out for a beer. 
+
+See you soon
