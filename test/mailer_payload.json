@@ -1,7 +1,7 @@
 {"type": "mailer", 
  "params": {
  		"from": "robot@mymailer.com",
- 		"to": "gipsh@gmail.com",
+ 		"to": "supercool@gmail.com",
  		"subject": "Hola amigo"
 	}
 }
