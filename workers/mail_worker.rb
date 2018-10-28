@@ -1,13 +1,16 @@
 require 'sidekiq'
 require 'net/smtp'
 require 'erb'
+require 'zaru'
 
 
 class MailWorker
   include Sidekiq::Worker
   sidekiq_options queue: 'mailer', retry: false, backtrace: true
 
-  settings = YAML.load(File.read("#{Dir.pwd}/config/config.yml"))
+#  settings = YAML.load(File.read("#{Dir.pwd}/config/config.yml"))
+  settings = YAML.load(ERB.new(File.read("#{Dir.pwd}/config/config.yml")).result)
+
 
 
   # TODO: use any smtp based on a arg[:stmp] or default
@@ -18,15 +21,19 @@ class MailWorker
   $smtp_port = settings['smtp'][$smtp_label]['port'] 
   $smtp_domain = settings['smtp'][$smtp_label]['domain'] 
 
+  
   def perform(args)
     puts args
     puts args['params']
-    send_mail(args['params']['to'], args['params']['from'], args['params']['subject'] ,args['params'], "#{Dir.pwd}/templates/simple_mail_template.txt")
+    template_name = Zaru.sanitize! args['params']['template'] 
+    if File.file?("#{Dir.pwd}/templates/#{template_name}") 
+      send_mail(args['params']['to'], args['params']['from'], args['params']['subject'] ,args['params'], "#{Dir.pwd}/templates/#{template_name}")
+    else
+      puts "Teamplate not found [#{Dir.pwd}/templates/#{template_name}]"		
+    end
   end
 
-
-
-  def send_mail(mailto, mailfrom, mailsubject, args, template_file)
+ def send_mail(mailto, mailfrom, mailsubject, args, template_file)
         b = binding
 
         from = mailfrom
@@ -47,4 +54,6 @@ class MailWorker
            smtp.send_message(output, from, to)
         end
   end
+
+
 end

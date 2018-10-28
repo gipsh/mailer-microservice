@@ -21,14 +21,17 @@ smtp:
 
 `POST /job` will add a job to the mailer worker 
 
+`GET /templates` returns a json list of all the available templates
+
+`GET /status` returns the current status of the queue taken from sidekiq
+
+
 try this curl for testing:
 
 ```bash
-curl --header "Content-Type: application/json" \
-  --request POST \
-  --data '{"type": "mailer", "params": {"from":"robot@mymailer.com","to":"supercool@gmail.com","subject":"Hola amigo"}}'\
-  http://localhost:3000/job
+curl --header "Content-Type: application/json" --request POST --data '{"type": "mailer", "params": {"template":"bienvenido_V3.html","from":"info@mycompany.com","to":"john@hotmail.com","subject":"Hola amigo como va"}}'  http://localhost:8080/job
 ```
+
 
 # Templates
 
