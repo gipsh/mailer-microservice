@@ -1,0 +1,7 @@
+From: <%= from %>
+To: <%= to %>
+Subject: <%= subject %>
+
+This one is the other template. 
+
+See you soon

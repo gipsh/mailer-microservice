@@ -2,7 +2,10 @@ require 'sinatra/base'
 require 'sidekiq'
 require 'sidekiq/api'
 require 'sidekiq/web'
-require_relative "../workers/mail_worker.rb"
+require 'json'
+
+
+Dir[File.join(__dir__, '../workers/', '*.rb')].each { |file| require_relative file }
 
 $stdout.sync = true
 
@@ -22,15 +25,20 @@ class App < Sinatra::Application
 		"
   end
 
+ 
+  get '/templates' do
+    templates = Dir["#{Dir.pwd}/templates/*"].map { |f| File.basename(f) }
+    "#{templates.to_json}"
+  end
+
   post '/job' do
     content_type :json
     req = JSON.load(request.body.read.to_s)
     puts req
-    # execute the job...
     jid = MailWorker.perform_async(req)
     { :job_id => jid }.to_json
-    #status 200
   end
+
 end
 
 
