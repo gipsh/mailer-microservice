@@ -1,6 +1,6 @@
 {"type": "mailer", 
  "params": {
-		"template":"other.txt",
+		"template":"other_template.txt",
  		"from": "robot@mymailer.com",
  		"to": "supercool@gmail.com",
  		"subject": "Hola amigo"
